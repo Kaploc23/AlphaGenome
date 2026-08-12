@@ -312,6 +312,48 @@ def summarize_tf_intervals(selection: TFSelection) -> list[str]:
     return lines
 
 
+def prompt_tf_include_names() -> list[str] | None:
+    if not prompt_yes_no("Limit TF highlights to specific names?", default_yes=False):
+        return None
+
+    raw = prompt_nonempty("Enter TF names (comma-separated, e.g., GATA6,GATA4): ")
+    names = [normalize_tf_name(token) for token in raw.split(",") if token.strip()]
+    names = list(dict.fromkeys(name for name in names if name))
+    if not names:
+        print("No valid TF names provided; using all selected TFs.")
+        return None
+    print("Will include only these TFs:", ", ".join(names))
+    return names
+
+
+def filter_tf_selection_by_include_names(selection: TFSelection, include_names: list[str] | None) -> TFSelection:
+    if not include_names:
+        return selection
+    if not selection.ordered_names:
+        return selection
+
+    include_set = {normalize_tf_name(name) for name in include_names if str(name).strip()}
+    if not include_set:
+        return selection
+
+    kept_names = [
+        name
+        for name in selection.ordered_names
+        if tf_name_aliases(name) & include_set
+    ]
+    kept_name_set = set(kept_names)
+    kept_regions = [region for region in selection.regions if region.name in kept_name_set]
+
+    matched_inputs = sorted({alias for name in kept_names for alias in tf_name_aliases(name) if alias in include_set})
+    missing_inputs = [name for name in include_names if name not in matched_inputs]
+
+    print(f"Filtered TF highlights to requested names: {len(kept_names)} TFs, {len(kept_regions)} intervals")
+    if missing_inputs:
+        print("Requested TFs not found in selected intervals:", ", ".join(missing_inputs))
+
+    return TFSelection(regions=kept_regions, ordered_names=kept_names)
+
+
 def resolve_heart_tf_path(files_root: Path) -> Path:
     candidates = [
         files_root / "Misc" / "HeartTSList.xlsx",
@@ -1208,8 +1250,8 @@ def parse_args() -> argparse.Namespace:
         default="Files",
         help="Folder containing static input assets like TF CSVs and HeartTSList.xlsx (default: Files)",
     )
-    parser.add_argument("--batch-size", type=int, default=8)
-    parser.add_argument("--max-workers", type=int, default=1)
+    parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument("--max-workers", type=int, default=4)
     return parser.parse_args()
 
 
@@ -1272,7 +1314,9 @@ def main() -> None:
     highlight_tfs = prompt_yes_no("Highlight transcription factors on the plot?", default_yes=True)
 
     tf_selection = TFSelection(regions=[], ordered_names=[])
+    tf_include_names: list[str] | None = None
     if highlight_tfs:
+        tf_include_names = prompt_tf_include_names()
         try:
             tf_selection = prompt_tf_regions_from_jaspar(files_root=Path(args.assets_root), mut_interval=mut_interval)
         except Exception as jaspar_exc:
@@ -1285,6 +1329,7 @@ def main() -> None:
         if not tf_selection.regions:
             if prompt_yes_no("Fall back to TF CSV input for highlights?", default_yes=True):
                 tf_selection = prompt_tf_regions_from_csv(files_root=Path(args.assets_root), chrom=utr_interval.chrom)
+        tf_selection = filter_tf_selection_by_include_names(tf_selection, tf_include_names)
         print(f"Parsed TF intervals: {len(tf_selection.regions)}")
 
     readout_rel_start, readout_rel_end = interval_to_rel(mut_interval, tss_1based, strand)
@@ -1308,6 +1353,8 @@ def main() -> None:
         print(f"  Ontology terms: {', '.join(ontology_terms)}")
     if post_filter_keywords:
         print(f"  Strict biosample keywords: {', '.join(post_filter_keywords)}")
+    if tf_include_names:
+        print(f"  TF include list: {', '.join(tf_include_names)}")
     if not prompt_yes_no("Proceed with this run?", default_yes=True):
         print("Run cancelled by user before scoring.")
         return
@@ -1429,6 +1476,7 @@ def main() -> None:
         "  Track grouping: biosample",
         f"  Ontology terms: {', '.join(ontology_terms) if ontology_terms else 'none'}",
         f"  Strict biosample keywords: {', '.join(post_filter_keywords) if post_filter_keywords else 'none'}",
+        f"  TF include list: {', '.join(tf_include_names) if tf_include_names else 'all selected'}",
         f"  Metadata summary: {metadata_summary_csv}",
         f"  Data table: {table_csv}",
         f"  Raw plot: {raw_plot}",

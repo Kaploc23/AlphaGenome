@@ -381,8 +381,18 @@ def parse_args() -> argparse.Namespace:
   parser.add_argument("--output-types", nargs="+", default=["CAGE"])
   parser.add_argument("--ontology-terms", nargs="+", default=None, help="Ontology term CURIEs (e.g. UBERON:0000948 CL:0000746).")
   parser.add_argument("--cardiac-only", action="store_true", help="Restrict to cardiac ontology terms known to be supported.")
-  parser.add_argument("--batch-size", type=int, default=8)
-  parser.add_argument("--max-workers", type=int, default=1)
+  parser.add_argument(
+      "--batch-size",
+      type=int,
+      default=32,
+      help="Mutant sequences per API batch (higher is usually faster; default 32).",
+  )
+  parser.add_argument(
+      "--max-workers",
+      type=int,
+      default=4,
+      help="Concurrent workers for batched mutant scoring (default 4).",
+  )
   parser.add_argument(
       "--progress-log-every",
       type=int,
@@ -414,6 +424,14 @@ def parse_args() -> argparse.Namespace:
       "--metadata-summary-out",
       default=None,
       help="Optional CSV path for a summary of returned tracks grouped by biosample after post-filtering.",
+  )
+  parser.add_argument(
+      "--allow-empty-postfilter-fallback",
+      action="store_true",
+      help=(
+        "If strict post-filtering removes all requested outputs, retry scoring "
+        "without post-filter constraints instead of failing."
+      ),
   )
   parser.add_argument(
       "--context-fasta-in",
@@ -630,8 +648,6 @@ def main() -> None:
           flush=True,
       )
       effective_ontology_terms = None
-      effective_post_filter_ontology_curies = None
-      effective_post_filter_biosample_keywords = None
       wt_output = model.predict_sequence(
           sequence=wt_embedded,
           organism=organism,
@@ -666,24 +682,54 @@ def main() -> None:
         "No requested outputs were returned by AlphaGenome." in str(exc)
         and (effective_post_filter_ontology_curies or effective_post_filter_biosample_keywords)
     ):
-      print(
-          "Strict post-filtering removed all requested outputs. "
-          "Retrying without post-filter ontology/keyword constraints.",
-          flush=True,
-      )
-      effective_post_filter_ontology_curies = None
-      effective_post_filter_biosample_keywords = None
-      filtered_wt_output = wt_output
-      _, wt_total = score_output(
-          filtered_wt_output,
-          output_types,
-          promoter_start=readout_start_embedded,
-          promoter_end=readout_end_embedded,
-          position_aggregation=args.position_aggregation,
-          track_aggregation=args.track_aggregation,
-          output_aggregation=args.output_aggregation,
-          track_grouping=args.track_grouping,
-      )
+      if args.allow_empty_postfilter_fallback:
+        print(
+            "Strict post-filtering removed all requested outputs. "
+            "Retrying without post-filter ontology/keyword constraints.",
+            flush=True,
+        )
+        effective_post_filter_ontology_curies = None
+        effective_post_filter_biosample_keywords = None
+        filtered_wt_output = wt_output
+        _, wt_total = score_output(
+            filtered_wt_output,
+            output_types,
+            promoter_start=readout_start_embedded,
+            promoter_end=readout_end_embedded,
+            position_aggregation=args.position_aggregation,
+            track_aggregation=args.track_aggregation,
+            output_aggregation=args.output_aggregation,
+            track_grouping=args.track_grouping,
+        )
+      else:
+        pre_filter_meta = collect_output_metadata(wt_output)
+        post_filter_meta = collect_output_metadata(filtered_wt_output)
+        requested_output_names = [ot.name for ot in output_types]
+        print("", flush=True)
+        print("No tracks matched the requested strict cell-type filters.", flush=True)
+        print(f"Requested output types: {', '.join(requested_output_names)}", flush=True)
+        print(f"Tracks before filtering: {len(pre_filter_meta)}", flush=True)
+        print(f"Tracks after filtering: {len(post_filter_meta)}", flush=True)
+        if effective_post_filter_ontology_curies:
+          print(
+              "Post-filter ontology CURIEs: " + ", ".join(effective_post_filter_ontology_curies),
+              flush=True,
+          )
+        if effective_post_filter_biosample_keywords:
+          print(
+              "Post-filter biosample keywords: " + ", ".join(effective_post_filter_biosample_keywords),
+              flush=True,
+          )
+        print(
+            "This does not mean prediction failed. It means no returned tracks matched your filter.",
+            flush=True,
+        )
+        raise ValueError(
+            "Strict post-filtering removed all requested outputs. "
+            "Your cell-type filters likely matched zero tracks. "
+            "Adjust ontology/keywords, or pass --allow-empty-postfilter-fallback "
+            "to intentionally continue with unfiltered outputs."
+        ) from exc
     else:
       raise
 

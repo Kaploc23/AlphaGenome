@@ -590,8 +590,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Interactive interval saturation mutagenesis runner.")
     parser.add_argument("--api-key", default=None, help="Optional AlphaGenome API key. Falls back to ALPHAGENOME_API_KEY.")
     parser.add_argument("--output-root", default="Outputs", help="Root output directory (default: Outputs)")
-    parser.add_argument("--batch-size", type=int, default=8)
-    parser.add_argument("--max-workers", type=int, default=1)
+    parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument("--max-workers", type=int, default=4)
     return parser.parse_args()
 
 
