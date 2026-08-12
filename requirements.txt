@@ -1,0 +1,8 @@
+alphagenome
+pandas
+numpy
+matplotlib
+scipy
+tqdm
+biopython
+openpyxl
