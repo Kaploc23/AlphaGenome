@@ -1,0 +1,32 @@
+Run completion summary:
+  Completed at: 2026-08-08T17:14:13
+  Gene: NPPB
+  Strand: -
+  TSS: chr1:11,858,945
+  5' UTR: chr1:11,858,834-11,858,945
+  Readout (promoter-wide): chr1:11,858,445-11,859,945
+  Relative window: -1000/+500
+  Data table: Outputs/NPPB/nppb_tss_11858945_1000up_500down_run2_variant_effects.csv
+  Raw plot: Outputs/NPPB/Plots/nppb_tss_11858945_1000up_500down_run2_raw.png
+  Styled plot: Outputs/NPPB/Plots/nppb_tss_11858945_1000up_500down_run2_style_p_lt_0.05_only.png
+  TF highlights: 20 TFs
+    - STAT3: chr1:11,858,910-11,858,918
+    - JUN::JUNB: chr1:11,858,895-11,858,902
+    - NFIX: chr1:11,858,838-11,858,843; chr1:11,858,910-11,858,915; chr1:11,858,917-11,858,922; chr1:11,858,918-11,858,923; chr1:11,858,944-11,858,949
+    - ETS2: chr1:11,858,867-11,858,875; chr1:11,858,896-11,858,904
+    - Nr1H2: chr1:11,858,918-11,858,923
+    - KLF2: chr1:11,858,911-11,858,918
+    - Pparg::Rxra: chr1:11,858,911-11,858,923
+    - NACC2: chr1:11,858,831-11,858,835
+    - Mlxip: chr1:11,858,914-11,858,919; chr1:11,858,914-11,858,919
+    - HAND2: chr1:11,858,868-11,858,873; chr1:11,858,897-11,858,902; chr1:11,858,914-11,858,919
+    - HIF3A: chr1:11,858,915-11,858,920
+    - TBX5: chr1:11,858,911-11,858,918
+    - ZNF768: chr1:11,858,832-11,858,840
+    - Stat5a::Stat5b: chr1:11,858,835-11,858,843
+    - ERF::FIGLA: chr1:11,858,849-11,858,861; chr1:11,858,862-11,858,874
+    - ERF::FOXI1: chr1:11,858,897-11,858,906
+    - ERF::FOXO1: chr1:11,858,940-11,858,951
+    - MXI1: chr1:11,858,831-11,858,836; chr1:11,858,914-11,858,919
+    - KLF4: chr1:11,858,911-11,858,918
+    - TFEB: chr1:11,858,914-11,858,921

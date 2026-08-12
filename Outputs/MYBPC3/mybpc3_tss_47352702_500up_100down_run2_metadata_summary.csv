@@ -1,0 +1,265 @@
+output_type,biosample_group,track_count
+CAGE,"CD14-positive, CD16-positive monocyte",4
+CAGE,basophil,4
+CAGE,epithelial cell of Malassez,4
+CAGE,immature conventional dendritic cell,4
+CAGE,mesothelial cell,4
+CAGE,naive regulatory T cell,4
+CAGE,neutrophil,4
+CAGE,olfactory epithelial cell,4
+CAGE,plasmacytoid dendritic cell,4
+CAGE,A172,2
+CAGE,A549,2
+CAGE,Ammon's horn,2
+CAGE,"CD14-positive, CD16-negative classical monocyte",2
+CAGE,Caco-2,2
+CAGE,DU 145,2
+CAGE,G401,2
+CAGE,GM12878,2
+CAGE,HEK293,2
+CAGE,HL-60,2
+CAGE,HT1080,2
+CAGE,HeLa-S3,2
+CAGE,HepG2,2
+CAGE,Jurkat,2
+CAGE,K562,2
+CAGE,Langerhans cell,2
+CAGE,NCI-H226,2
+CAGE,NCI-H460,2
+CAGE,PC-3,2
+CAGE,Raji,2
+CAGE,SK-N-MC,2
+CAGE,Schwann cell,2
+CAGE,Sertoli cell,2
+CAGE,THP-1,2
+CAGE,acinar cell of salivary gland,2
+CAGE,acinar cell of sebaceous gland,2
+CAGE,adipocyte of breast,2
+CAGE,adipocyte of omentum tissue,2
+CAGE,adipose tissue,2
+CAGE,adrenal gland,2
+CAGE,adult organism,2
+CAGE,amnion,2
+CAGE,amnion mesenchymal stem cell,2
+CAGE,amniotic epithelial cell,2
+CAGE,amygdala,2
+CAGE,annulus pulposus cell,2
+CAGE,aorta,2
+CAGE,aortic endothelial cell,2
+CAGE,aortic smooth muscle cell,2
+CAGE,artery,2
+CAGE,astrocyte of the cerebellum,2
+CAGE,astrocyte of the cerebral cortex,2
+CAGE,blood,2
+CAGE,bone marrow,2
+CAGE,bone marrow cell,2
+CAGE,brain,2
+CAGE,breast,2
+CAGE,bronchial epithelial cell,2
+CAGE,bronchial smooth muscle cell,2
+CAGE,calcaneal tendon,2
+CAGE,camera-type eye,2
+CAGE,capillary endothelial cell,2
+CAGE,cardiac fibroblast,2
+CAGE,cardiac mesenchymal cell,2
+CAGE,cardiac muscle cell,2
+CAGE,caudate nucleus,2
+CAGE,cell of skeletal muscle,2
+CAGE,central nervous system pericyte,2
+CAGE,cerebellum,2
+CAGE,cerebrospinal fluid,2
+CAGE,chondrocyte,2
+CAGE,colon,2
+CAGE,corneal epithelial cell,2
+CAGE,corpus callosum,2
+CAGE,cranial nerve II,2
+CAGE,cruciate ligament of knee,2
+CAGE,dark melanocyte,2
+CAGE,diaphragm,2
+CAGE,diencephalon,2
+CAGE,dorsal plus ventral thalamus,2
+CAGE,duodenum,2
+CAGE,dura mater,2
+CAGE,egg chorion,2
+CAGE,embryonic uterus,2
+CAGE,endothelial cell of artery,2
+CAGE,endothelial cell of lymphatic vessel,2
+CAGE,endothelial cell of umbilical vein,2
+CAGE,enteric smooth muscle cell,2
+CAGE,eosinophil,2
+CAGE,epididymis,2
+CAGE,epithelial cell of esophagus,2
+CAGE,epithelial cell of prostate,2
+CAGE,epithelial cell of proximal tubule,2
+CAGE,esophagus,2
+CAGE,fat cell,2
+CAGE,female gonad,2
+CAGE,fibroblast of choroid plexus,2
+CAGE,fibroblast of dermis,2
+CAGE,fibroblast of gingiva,2
+CAGE,fibroblast of lymphatic vessel,2
+CAGE,fibroblast of mammary gland,2
+CAGE,fibroblast of periodontium,2
+CAGE,fibroblast of pulmonary artery,2
+CAGE,fibroblast of the aortic adventitia,2
+CAGE,fibroblast of the conjuctiva,2
+CAGE,fibroblast of villous mesenchyme,2
+CAGE,frontal cortex,2
+CAGE,fungiform papilla,2
+CAGE,gallbladder,2
+CAGE,gamma-delta T cell,2
+CAGE,gingival epithelial cell,2
+CAGE,globus pallidus,2
+CAGE,glomerular endothelial cell,2
+CAGE,heart,2
+CAGE,heart left ventricle,2
+CAGE,hepatic mesenchymal stem cell,2
+CAGE,hepatocyte,2
+CAGE,immature CD1a-positive Langerhans cell,2
+CAGE,inferior rectus extraocular muscle,2
+CAGE,insula,2
+CAGE,intestinal epithelial cell,2
+CAGE,iris pigment epithelial cell,2
+CAGE,keratinocyte,2
+CAGE,keratocyte,2
+CAGE,kidney,2
+CAGE,lateral rectus extra-ocular muscle,2
+CAGE,left cardiac atrium,2
+CAGE,left ovary,2
+CAGE,lens epithelial cell,2
+CAGE,leptomeningeal cell,2
+CAGE,light melanocyte,2
+CAGE,liver,2
+CAGE,locus ceruleus,2
+CAGE,lower lobe of right lung,2
+CAGE,lung,2
+CAGE,lung fibroblast,2
+CAGE,lymph node,2
+CAGE,macrophage,2
+CAGE,mammary gland epithelial cell,2
+CAGE,mast cell,2
+CAGE,medial rectus extraocular muscle,2
+CAGE,medulla oblongata,2
+CAGE,meninx,2
+CAGE,mesangial cell,2
+CAGE,mesenchymal cell,2
+CAGE,mesenchymal stem cell of Wharton's jelly,2
+CAGE,mesenchymal stem cell of adipose,2
+CAGE,mesenchymal stem cell of the bone marrow,2
+CAGE,mesenchymal stem cell of umbilical cord,2
+CAGE,middle frontal gyrus,2
+CAGE,middle temporal gyrus,2
+CAGE,mitral valve,2
+CAGE,monocyte,2
+CAGE,mouth mucosa,2
+CAGE,myelocyte,2
+CAGE,myotube,2
+CAGE,nail plate,2
+CAGE,"naive thymus-derived CD4-positive, alpha-beta T cell",2
+CAGE,natural killer cell,2
+CAGE,nephron tubule epithelial cell,2
+CAGE,neuron,2
+CAGE,neuronal stem cell,2
+CAGE,non-pigmented ciliary epithelial cell,2
+CAGE,nucleus accumbens,2
+CAGE,nucleus pulposus cell of intervertebral disc,2
+CAGE,occipital lobe,2
+CAGE,occipital pole,2
+CAGE,olfactory region,2
+CAGE,oligodendrocyte precursor cell,2
+CAGE,omentum preadipocyte,2
+CAGE,osteoblast,2
+CAGE,outer root sheath cell,2
+CAGE,pancreas,2
+CAGE,paracentral gyrus,2
+CAGE,parietal lobe,2
+CAGE,parotid gland,2
+CAGE,penis,2
+CAGE,perineural cell,2
+CAGE,perirenal adipocyte cell,2
+CAGE,perirenal preadipocyte,2
+CAGE,pineal body,2
+CAGE,pituitary gland,2
+CAGE,placenta,2
+CAGE,placental epithelial cell,2
+CAGE,pneumocyte,2
+CAGE,pons,2
+CAGE,postcentral gyrus,2
+CAGE,preadipocyte of the breast,2
+CAGE,prostate gland,2
+CAGE,prostate stromal cell,2
+CAGE,pulmonary valve,2
+CAGE,putamen,2
+CAGE,rectum,2
+CAGE,renal cortical epithelial cell,2
+CAGE,respiratory epithelial cell,2
+CAGE,respiratory system smooth muscle,2
+CAGE,reticulocyte,2
+CAGE,retina,2
+CAGE,retinal pigment epithelial cell,2
+CAGE,right ovary,2
+CAGE,saliva-secreting gland,2
+CAGE,seminal vesicle,2
+CAGE,skeletal muscle myoblast,2
+CAGE,skeletal muscle satellite cell,2
+CAGE,skeletal muscle tissue,2
+CAGE,skin fibroblast,2
+CAGE,skin of palm of manus,2
+CAGE,small intestine,2
+CAGE,smooth muscle cell of bladder,2
+CAGE,smooth muscle cell of colon,2
+CAGE,smooth muscle cell of prostate,2
+CAGE,smooth muscle cell of the brachiocephalic vasculature,2
+CAGE,smooth muscle cell of the brain vasculature,2
+CAGE,smooth muscle cell of the carotid artery,2
+CAGE,smooth muscle cell of the coronary artery,2
+CAGE,smooth muscle cell of the esophagus,2
+CAGE,smooth muscle cell of the internal thoracic artery,2
+CAGE,smooth muscle cell of the pulmonary artery,2
+CAGE,smooth muscle cell of the subclavian artery,2
+CAGE,smooth muscle cell of the umbilical artery,2
+CAGE,smooth muscle cell of the umbilical vein,2
+CAGE,smooth muscle cell of trachea,2
+CAGE,smooth muscle tissue,2
+CAGE,soleus muscle,2
+CAGE,spinal cord,2
+CAGE,spleen,2
+CAGE,stem cell of epidermis,2
+CAGE,stomach,2
+CAGE,stromal cell of pancreas,2
+CAGE,subcutaneous fat cell,2
+CAGE,subcutaneous preadipocyte,2
+CAGE,submandibular gland,2
+CAGE,substantia nigra,2
+CAGE,superior rectus extraocular muscle,2
+CAGE,synovial cell,2
+CAGE,temporal lobe,2
+CAGE,tendon cell,2
+CAGE,testis,2
+CAGE,thoracic aorta endothelial cell,2
+CAGE,throat,2
+CAGE,thymus,2
+CAGE,thyroid gland,2
+CAGE,tongue,2
+CAGE,tonsil,2
+CAGE,trabecular meshwork cell,2
+CAGE,trachea,2
+CAGE,tracheal epithelial cell,2
+CAGE,tricuspid valve,2
+CAGE,umbilical cord,2
+CAGE,umbilical cord blood,2
+CAGE,urethra,2
+CAGE,urinary bladder,2
+CAGE,urothelial cell,2
+CAGE,uterine cervix,2
+CAGE,uterine smooth muscle cell,2
+CAGE,uterus,2
+CAGE,vagina,2
+CAGE,vas deferens,2
+CAGE,vein,2
+CAGE,vein endothelial cell,2
+CAGE,vermiform appendix,2
+CAGE,vertebral mesenchymal stem cell,2
+CAGE,visceral preadipocyte,2
+CAGE,vitreous humor,2
+CAGE,zone of skin,2

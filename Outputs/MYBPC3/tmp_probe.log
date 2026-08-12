@@ -1,0 +1,19 @@
+/Users/hayden/.matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /Users/hayden/.vscode/tmp/tmp_vscode_3/matplotlib-ehjc4seq because there was an issue with the default path ({configdir}); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+Matplotlib is building the font cache; this may take a moment.
+Ontology filters: none (all matching datasets).
+Traceback (most recent call last):
+  File "/Users/hayden/Desktop/AlphaGenome/tss_saturation_pipeline.py", line 860, in <module>
+    main()
+  File "/Users/hayden/Desktop/AlphaGenome/tss_saturation_pipeline.py", line 607, in main
+    model = dna_client.create(api_key)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/hayden/Desktop/AlphaGenome/.venv/lib/python3.11/site-packages/alphagenome/models/dna_client.py", line 913, in create
+    grpc.channel_ready_future(channel).result(timeout)
+  File "/Users/hayden/Desktop/AlphaGenome/.venv/lib/python3.11/site-packages/grpc/_utilities.py", line 160, in result
+    self._block(timeout)
+  File "/Users/hayden/Desktop/AlphaGenome/.venv/lib/python3.11/site-packages/grpc/_utilities.py", line 101, in _block
+    self._condition.wait()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15_4/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 327, in wait
+    waiter.acquire()
+KeyboardInterrupt

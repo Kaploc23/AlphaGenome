@@ -1,0 +1,56 @@
+Run completion summary:
+  Completed at: 2026-08-10T20:58:40
+  Project: MYSETV
+  Position aggregation: sum
+  Dataset filter: ventricular: Ventricular (cardiac ventricle)
+  Ontology terms: UBERON:0002084
+  Interval count: 7
+  Interval label: MEF2D
+    Genomic interval: chr1:156,475,850-156,476,487
+    Midpoint: chr1:156,476,168
+    Relative window: -318/319
+    Data table: Outputs/MYSETV/MEF2D/mysetv_MEF2D_chr1_156475850_156476487_variant_effects.csv
+    Raw plot: Outputs/MYSETV/MEF2D/Plots/mysetv_MEF2D_chr1_156475850_156476487_raw.png
+    Styled plot: Outputs/MYSETV/MEF2D/Plots/mysetv_MEF2D_chr1_156475850_156476487_style_p_lt_0.05_only.png
+  Interval label: MYL2
+    Genomic interval: chr12:110,931,282-110,931,968
+    Midpoint: chr12:110,931,625
+    Relative window: -343/343
+    Data table: Outputs/MYSETV/MYL2/mysetv_MYL2_chr12_110931282_110931968_variant_effects.csv
+    Raw plot: Outputs/MYSETV/MYL2/Plots/mysetv_MYL2_chr12_110931282_110931968_raw.png
+    Styled plot: Outputs/MYSETV/MYL2/Plots/mysetv_MYL2_chr12_110931282_110931968_style_p_lt_0.05_only.png
+  Interval label: MYLK3
+    Genomic interval: chr16:46,742,339-46,743,487
+    Midpoint: chr16:46,742,913
+    Relative window: -574/574
+    Data table: Outputs/MYSETV/MYLK3/mysetv_MYLK3_chr16_46742339_46743487_variant_effects.csv
+    Raw plot: Outputs/MYSETV/MYLK3/Plots/mysetv_MYLK3_chr16_46742339_46743487_raw.png
+    Styled plot: Outputs/MYSETV/MYLK3/Plots/mysetv_MYLK3_chr16_46742339_46743487_style_p_lt_0.05_only.png
+  Interval label: AKAP6
+    Genomic interval: chr14:32,457,473-32,457,891
+    Midpoint: chr14:32,457,682
+    Relative window: -209/209
+    Data table: Outputs/MYSETV/AKAP6/mysetv_AKAP6_chr14_32457473_32457891_variant_effects.csv
+    Raw plot: Outputs/MYSETV/AKAP6/Plots/mysetv_AKAP6_chr14_32457473_32457891_raw.png
+    Styled plot: Outputs/MYSETV/AKAP6/Plots/mysetv_AKAP6_chr14_32457473_32457891_style_p_lt_0.05_only.png
+  Interval label: NKX2-5
+    Genomic interval: chr5:173,228,396-173,228,973
+    Midpoint: chr5:173,228,684
+    Relative window: -288/289
+    Data table: Outputs/MYSETV/NKX2-5/mysetv_NKX2-5_chr5_173228396_173228973_variant_effects.csv
+    Raw plot: Outputs/MYSETV/NKX2-5/Plots/mysetv_NKX2-5_chr5_173228396_173228973_raw.png
+    Styled plot: Outputs/MYSETV/NKX2-5/Plots/mysetv_NKX2-5_chr5_173228396_173228973_style_p_lt_0.05_only.png
+  Interval label: ACACB/UNG
+    Genomic interval: chr12:109,097,635-109,098,348
+    Midpoint: chr12:109,097,991
+    Relative window: -356/357
+    Data table: Outputs/MYSETV/ACACB_UNG/mysetv_ACACB_UNG_chr12_109097635_109098348_variant_effects.csv
+    Raw plot: Outputs/MYSETV/ACACB_UNG/Plots/mysetv_ACACB_UNG_chr12_109097635_109098348_raw.png
+    Styled plot: Outputs/MYSETV/ACACB_UNG/Plots/mysetv_ACACB_UNG_chr12_109097635_109098348_style_p_lt_0.05_only.png
+  Interval label: ANKRD1
+    Genomic interval: chr10:90,930,166-90,931,616
+    Midpoint: chr10:90,930,891
+    Relative window: -725/725
+    Data table: Outputs/MYSETV/ANKRD1/mysetv_ANKRD1_chr10_90930166_90931616_variant_effects.csv
+    Raw plot: Outputs/MYSETV/ANKRD1/Plots/mysetv_ANKRD1_chr10_90930166_90931616_raw.png
+    Styled plot: Outputs/MYSETV/ANKRD1/Plots/mysetv_ANKRD1_chr10_90930166_90931616_style_p_lt_0.05_only.png

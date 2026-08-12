@@ -1,0 +1,14 @@
+Run completion summary:
+  Completed at: 2026-08-10T19:15:26
+  Project: MYSET
+  Position aggregation: sum
+  Dataset filter: atrial: Atrial (cardiac atrium)
+  Ontology terms: UBERON:0002079
+  Interval count: 1
+  Interval label: ANKRD1
+    Genomic interval: chr10:90,930,166-90,931,616
+    Midpoint: chr10:90,930,891
+    Relative window: -725/725
+    Data table: Outputs/MYSET/ANKRD1/myset_ANKRD1_chr10_90930166_90931616_run3_variant_effects.csv
+    Raw plot: Outputs/MYSET/ANKRD1/Plots/myset_ANKRD1_chr10_90930166_90931616_run3_raw.png
+    Styled plot: Outputs/MYSET/ANKRD1/Plots/myset_ANKRD1_chr10_90930166_90931616_run3_style_p_lt_0.05_only.png
