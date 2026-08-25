@@ -85,6 +85,9 @@ OUTPUT_PRESETS: list[tuple[str, str, list[str]]] = [
     ("enhancer_basic", "Enhancer-focused basic (ATAC, DNASE, CAGE)", ["ATAC", "DNASE", "CAGE"]),
     ("enhancer_extended", "Enhancer-focused extended (ATAC, DNASE, CAGE, CHIP_HISTONE, CHIP_TF, PROCAP)", ["ATAC", "DNASE", "CAGE", "CHIP_HISTONE", "CHIP_TF", "PROCAP"]),
     ("tf_binding", "TF-binding focused (CHIP_TF, ATAC, DNASE)", ["CHIP_TF", "ATAC", "DNASE"]),
+    ("transcript_abundance", "General transcript abundance (RNA_SEQ, CAGE)", ["RNA_SEQ", "CAGE"]),
+    ("polyadenylation_shifts", "3' end processing / polyadenylation (PolyA / 3'-seq)", ["RNA_SEQ", "CAGE"]),
+    ("translation_binding", "Translation and binding (Ribo-seq / eCLIP)", ["RNA_SEQ", "CAGE"]),
 ]
 
 DATASET_POSTFILTER_KEYWORDS: dict[str, list[str]] = {
@@ -219,9 +222,9 @@ def prompt_dataset_choice() -> tuple[str, str, list[str] | None, list[str] | Non
     return "custom", "custom", terms, None
 
 
-def prompt_output_choice() -> tuple[str, list[str]]:
+def prompt_output_choice() -> tuple[str, list[str], str | None]:
     print("\nChoose output preset:")
-    for index, (_, description, outputs) in enumerate(OUTPUT_PRESETS, start=1):
+    for index, (key, description, outputs) in enumerate(OUTPUT_PRESETS, start=1):
         print(f"  {index}. {description} -> {', '.join(outputs)}")
     print(f"  {len(OUTPUT_PRESETS) + 1}. Custom output types")
 
@@ -233,7 +236,11 @@ def prompt_output_choice() -> tuple[str, list[str]]:
 
     if choice <= len(OUTPUT_PRESETS):
         key, description, outputs = OUTPUT_PRESETS[choice - 1]
-        return f"{key}: {description}", list(outputs)
+        # For some presets we also want to propagate a high-level filter key
+        filter_key = None
+        if key in {"transcript_abundance", "polyadenylation_shifts", "translation_binding"}:
+            filter_key = key
+        return f"{key}: {description}", list(outputs), filter_key
 
     custom_raw = prompt_nonempty(
         "Enter output types (comma-separated, e.g., ATAC,DNASE,CAGE,CHIP_TF): "
@@ -241,7 +248,10 @@ def prompt_output_choice() -> tuple[str, list[str]]:
     outputs = [value.strip().upper() for value in custom_raw.split(",") if value.strip()]
     if not outputs:
         raise RuntimeError("No output types provided for custom output selection")
-    return "custom", outputs
+    return "custom", outputs, None
+
+
+# (output filter selection now integrated into prompt_output_choice)
 
 
 def tss_from_utr(utr: GenomicInterval, strand: str) -> int:
@@ -419,7 +429,8 @@ def pick_best_transcript(rows: pd.DataFrame) -> pd.Series:
 
 def lookup_ensembl_gene_id(gene_symbol: str) -> str:
     url = f"https://rest.ensembl.org/lookup/symbol/homo_sapiens/{gene_symbol}?content-type=application/json"
-    request = urllib.request.Request(url, headers={"Accept": "application/json"})
+    headers = {"Accept": "application/json", "User-Agent": "AlphaGenome/1.0 (contact: none)"}
+    request = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(request, timeout=30) as response:
         payload = response.read().decode("utf-8")
     data = json.loads(payload)
@@ -446,9 +457,11 @@ def rest_get_json(path: str) -> tuple[dict | list, str]:
     ]
     last_error: Exception | None = None
 
+    # Include a User-Agent to avoid naive blocking by some Ensembl mirrors.
+    headers = {"Accept": "application/json", "User-Agent": "AlphaGenome/1.0 (contact: none)"}
     for host in hosts:
         url = f"{host}{path}"
-        request = urllib.request.Request(url, headers={"Accept": "application/json"})
+        request = urllib.request.Request(url, headers=headers)
         try:
             with urllib.request.urlopen(request, timeout=30) as response:
                 payload = response.read().decode("utf-8")
@@ -1308,7 +1321,7 @@ def main() -> None:
     position_aggregation = "mean" if normalize_magnitude else "sum"
 
     dataset_key, dataset_label, ontology_terms, post_filter_keywords = prompt_dataset_choice()
-    output_label, output_types = prompt_output_choice()
+    output_label, output_types, output_filter = prompt_output_choice()
 
     highlight_utr = prompt_yes_no("Highlight UTR on the plot?", default_yes=True)
     highlight_tfs = prompt_yes_no("Highlight transcription factors on the plot?", default_yes=True)
@@ -1346,6 +1359,7 @@ def main() -> None:
     print(f"  Dataset filter: {dataset_label}")
     print(f"  Output preset: {output_label}")
     print(f"  Output types: {', '.join(output_types)}")
+    print(f"  Output filter: {output_filter if output_filter else 'none'}")
     print("  Track grouping: biosample")
     if ontology_terms is None:
         print("  Ontology terms: none")
@@ -1432,6 +1446,8 @@ def main() -> None:
             cmd.extend(["--ontology-terms", *ontology_terms])
     if post_filter_keywords:
         cmd.extend(["--post-filter-biosample-keywords", *post_filter_keywords])
+    if output_filter:
+        cmd.extend(["--output-filter", output_filter])
 
     print("\nRunning saturation mutagenesis...")
     print(" ".join(cmd))

@@ -379,6 +379,21 @@ def parse_args() -> argparse.Namespace:
   parser.add_argument("--api-key", default=None, help="AlphaGenome API key; defaults to ALPHAGENOME_API_KEY.")
   parser.add_argument("--organism", default="HOMO_SAPIENS", choices=["HOMO_SAPIENS", "MUS_MUSCULUS"])
   parser.add_argument("--output-types", nargs="+", default=["CAGE"])
+  parser.add_argument(
+      "--output-filter",
+      choices=[
+          "transcript_abundance",
+          "polyadenylation_shifts",
+          "translation_binding",
+      ],
+      default=None,
+      help=(
+          "High-level preset to pick relevant outputs/assays. "
+          "Choices: transcript_abundance (RNA-seq + CAGE), "
+          "polyadenylation_shifts (PolyA / 3'-seq assays), "
+          "translation_binding (Ribo-seq / eCLIP assays)."
+      ),
+  )
   parser.add_argument("--ontology-terms", nargs="+", default=None, help="Ontology term CURIEs (e.g. UBERON:0000948 CL:0000746).")
   parser.add_argument("--cardiac-only", action="store_true", help="Restrict to cardiac ontology terms known to be supported.")
   parser.add_argument(
@@ -617,6 +632,41 @@ def main() -> None:
   effective_ontology_terms = ontology_terms
   effective_post_filter_ontology_curies = args.post_filter_ontology_curies
   effective_post_filter_biosample_keywords = args.post_filter_biosample_keywords
+  # Map high-level output filter presets to output types and biosample keywords.
+  if args.output_filter:
+    preset = args.output_filter
+    # Start from any user-provided keywords, ensure list to extend.
+    kw = list(effective_post_filter_biosample_keywords or [])
+    if preset == "transcript_abundance":
+      # Prefer explicit RNA-seq + CAGE outputs when available.
+      args.output_types = ["RNA_SEQ", "CAGE"]
+      kw.extend(["rna-seq", "cage"])
+    elif preset == "polyadenylation_shifts":
+      # Look for polyadenylation / 3' end assays in returned tracks.
+      kw.extend(["polya", "polya-seq", "polyadenylation", "3'-seq", "3p", "3-prime"])
+    elif preset == "translation_binding":
+      # Look for translation and binding assays such as Ribo-seq and eCLIP.
+      kw.extend(["ribo-seq", "riboseq", "ribo", "eclip", "eclip-seq", "clip"])
+    # Deduplicate and normalize while preserving order.
+    seen = set()
+    deduped: list[str] = []
+    for k in kw:
+      nk = str(k).strip()
+      if not nk:
+        continue
+      lk = nk.lower()
+      if lk in seen:
+        continue
+      seen.add(lk)
+      deduped.append(nk)
+    effective_post_filter_biosample_keywords = deduped or None
+    if effective_post_filter_biosample_keywords:
+      print(
+          "Applied output filter preset:",
+          args.output_filter,
+          "-> biosample keywords:",
+          ", ".join(effective_post_filter_biosample_keywords),
+      )
   if ontology_terms is None:
     print("Ontology request filters: none (all matching datasets).")
   else:

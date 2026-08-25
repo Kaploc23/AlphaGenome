@@ -70,6 +70,9 @@ OUTPUT_PRESETS: list[tuple[str, str, list[str]]] = [
     ("enhancer_basic", "Enhancer-focused basic (ATAC, DNASE, CAGE)", ["ATAC", "DNASE", "CAGE"]),
     ("enhancer_extended", "Enhancer-focused extended (ATAC, DNASE, CAGE, CHIP_HISTONE, CHIP_TF, PROCAP)", ["ATAC", "DNASE", "CAGE", "CHIP_HISTONE", "CHIP_TF", "PROCAP"]),
     ("tf_binding", "TF-binding focused (CHIP_TF, ATAC, DNASE)", ["CHIP_TF", "ATAC", "DNASE"]),
+    ("transcript_abundance", "General transcript abundance (RNA_SEQ, CAGE)", ["RNA_SEQ", "CAGE"]),
+    ("polyadenylation_shifts", "3' end processing / polyadenylation (PolyA / 3'-seq)", ["RNA_SEQ", "CAGE"]),
+    ("translation_binding", "Translation and binding (Ribo-seq / eCLIP)", ["RNA_SEQ", "CAGE"]),
 ]
 
 DATASET_POSTFILTER_KEYWORDS: dict[str, list[str]] = {
@@ -178,9 +181,9 @@ def prompt_dataset_choice() -> tuple[str, str, list[str] | None, list[str] | Non
     return "custom", "custom", terms, None
 
 
-def prompt_output_choice() -> tuple[str, list[str]]:
+def prompt_output_choice() -> tuple[str, list[str], str | None]:
     print("\nChoose output preset:")
-    for index, (_, description, outputs) in enumerate(OUTPUT_PRESETS, start=1):
+    for index, (key, description, outputs) in enumerate(OUTPUT_PRESETS, start=1):
         print(f"  {index}. {description} -> {', '.join(outputs)}")
     print(f"  {len(OUTPUT_PRESETS) + 1}. Custom output types")
 
@@ -192,7 +195,10 @@ def prompt_output_choice() -> tuple[str, list[str]]:
 
     if choice <= len(OUTPUT_PRESETS):
         key, description, outputs = OUTPUT_PRESETS[choice - 1]
-        return f"{key}: {description}", list(outputs)
+        filter_key = None
+        if key in {"transcript_abundance", "polyadenylation_shifts", "translation_binding"}:
+            filter_key = key
+        return f"{key}: {description}", list(outputs), filter_key
 
     custom_raw = prompt_nonempty(
         "Enter output types (comma-separated, e.g., ATAC,DNASE,CAGE,CHIP_TF): "
@@ -200,7 +206,29 @@ def prompt_output_choice() -> tuple[str, list[str]]:
     outputs = [value.strip().upper() for value in custom_raw.split(",") if value.strip()]
     if not outputs:
         raise RuntimeError("No output types provided for custom output selection")
-    return "custom", outputs
+    return "custom", outputs, None
+
+
+def prompt_output_filter() -> str | None:
+    print("\nOptional: choose an output filter preset to bias returned tracks:")
+    filters = [
+        ("transcript_abundance", "Transcript abundance (RNA-seq + CAGE)"),
+        ("polyadenylation_shifts", "3' end processing / polyadenylation shifts (PolyA / 3'-seq)"),
+        ("translation_binding", "Translation and binding (Ribo-seq / eCLIP)"),
+    ]
+    for i, (_, desc) in enumerate(filters, start=1):
+        print(f"  {i}. {desc}")
+    print(f"  {len(filters) + 1}. None (no output filter)")
+
+    choice = prompt_int_range(
+        f"Select output filter (1-{len(filters) + 1}): ",
+        minimum=1,
+        maximum=len(filters) + 1,
+    )
+    if choice <= len(filters):
+        key, desc = filters[choice - 1]
+        return key
+    return None
 
 
 def slugify(text: str) -> str:
@@ -610,7 +638,8 @@ def main() -> None:
     position_aggregation = "mean" if normalize_magnitude else "sum"
 
     dataset_key, dataset_label, ontology_terms, post_filter_keywords = prompt_dataset_choice()
-    output_label, output_types = prompt_output_choice()
+    output_label, output_types, output_filter = prompt_output_choice()
+    output_filter = prompt_output_filter()
 
     api_key = args.api_key or os.getenv("ALPHAGENOME_API_KEY")
     if not api_key:
@@ -626,6 +655,7 @@ def main() -> None:
     print(f"  Dataset filter: {dataset_label}")
     print(f"  Output preset: {output_label}")
     print(f"  Output types: {', '.join(output_types)}")
+    print(f"  Output filter: {output_filter if output_filter else 'none'}")
     print("  Track grouping: biosample")
     print(f"  Ontology terms: {', '.join(ontology_terms) if ontology_terms else 'none'}")
     if post_filter_keywords:
@@ -727,6 +757,8 @@ def main() -> None:
                 cmd.extend(["--ontology-terms", *ontology_terms])
         if post_filter_keywords:
             cmd.extend(["--post-filter-biosample-keywords", *post_filter_keywords])
+        if output_filter:
+            cmd.extend(["--output-filter", output_filter])
 
         print(f"\nRunning {task.label} ({format_interval(interval)})...")
         print(" ".join(cmd))
