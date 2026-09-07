@@ -382,6 +382,7 @@ def parse_args() -> argparse.Namespace:
   parser.add_argument(
       "--output-filter",
       choices=[
+          "none",
           "transcript_abundance",
           "polyadenylation_shifts",
           "translation_binding",
@@ -389,6 +390,7 @@ def parse_args() -> argparse.Namespace:
       default=None,
       help=(
           "High-level preset to pick relevant outputs/assays. "
+          "Use none for no preset filtering. "
           "Choices: transcript_abundance (RNA-seq + CAGE), "
           "polyadenylation_shifts (PolyA / 3'-seq assays), "
           "translation_binding (Ribo-seq / eCLIP assays)."

@@ -81,6 +81,7 @@ DATASET_PRESETS: list[tuple[str, str, list[str]]] = [
 ]
 
 OUTPUT_PRESETS: list[tuple[str, str, list[str]]] = [
+    ("unfiltered", "Unfiltered (CAGE, no assay filter)", ["CAGE"]),
     ("promoter", "Promoter-focused (CAGE)", ["CAGE"]),
     ("enhancer_basic", "Enhancer-focused basic (ATAC, DNASE, CAGE)", ["ATAC", "DNASE", "CAGE"]),
     ("enhancer_extended", "Enhancer-focused extended (ATAC, DNASE, CAGE, CHIP_HISTONE, CHIP_TF, PROCAP)", ["ATAC", "DNASE", "CAGE", "CHIP_HISTONE", "CHIP_TF", "PROCAP"]),
@@ -238,7 +239,7 @@ def prompt_output_choice() -> tuple[str, list[str], str | None]:
         key, description, outputs = OUTPUT_PRESETS[choice - 1]
         # For some presets we also want to propagate a high-level filter key
         filter_key = None
-        if key in {"transcript_abundance", "polyadenylation_shifts", "translation_binding"}:
+        if key in {"unfiltered", "transcript_abundance", "polyadenylation_shifts", "translation_binding"}:
             filter_key = key
         return f"{key}: {description}", list(outputs), filter_key
 
