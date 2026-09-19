@@ -66,6 +66,7 @@ DATASET_PRESETS: list[tuple[str, str, list[str]]] = [
 ]
 
 OUTPUT_PRESETS: list[tuple[str, str, list[str]]] = [
+    ("unfiltered", "Unfiltered (CAGE, no assay filter)", ["CAGE"]),
     ("promoter", "Promoter-focused (CAGE)", ["CAGE"]),
     ("enhancer_basic", "Enhancer-focused basic (ATAC, DNASE, CAGE)", ["ATAC", "DNASE", "CAGE"]),
     ("enhancer_extended", "Enhancer-focused extended (ATAC, DNASE, CAGE, CHIP_HISTONE, CHIP_TF, PROCAP)", ["ATAC", "DNASE", "CAGE", "CHIP_HISTONE", "CHIP_TF", "PROCAP"]),
@@ -196,7 +197,7 @@ def prompt_output_choice() -> tuple[str, list[str], str | None]:
     if choice <= len(OUTPUT_PRESETS):
         key, description, outputs = OUTPUT_PRESETS[choice - 1]
         filter_key = None
-        if key in {"transcript_abundance", "polyadenylation_shifts", "translation_binding"}:
+        if key in {"unfiltered", "transcript_abundance", "polyadenylation_shifts", "translation_binding"}:
             filter_key = key
         return f"{key}: {description}", list(outputs), filter_key
 
@@ -207,28 +208,6 @@ def prompt_output_choice() -> tuple[str, list[str], str | None]:
     if not outputs:
         raise RuntimeError("No output types provided for custom output selection")
     return "custom", outputs, None
-
-
-def prompt_output_filter() -> str | None:
-    print("\nOptional: choose an output filter preset to bias returned tracks:")
-    filters = [
-        ("transcript_abundance", "Transcript abundance (RNA-seq + CAGE)"),
-        ("polyadenylation_shifts", "3' end processing / polyadenylation shifts (PolyA / 3'-seq)"),
-        ("translation_binding", "Translation and binding (Ribo-seq / eCLIP)"),
-    ]
-    for i, (_, desc) in enumerate(filters, start=1):
-        print(f"  {i}. {desc}")
-    print(f"  {len(filters) + 1}. None (no output filter)")
-
-    choice = prompt_int_range(
-        f"Select output filter (1-{len(filters) + 1}): ",
-        minimum=1,
-        maximum=len(filters) + 1,
-    )
-    if choice <= len(filters):
-        key, desc = filters[choice - 1]
-        return key
-    return None
 
 
 def slugify(text: str) -> str:
@@ -639,7 +618,6 @@ def main() -> None:
 
     dataset_key, dataset_label, ontology_terms, post_filter_keywords = prompt_dataset_choice()
     output_label, output_types, output_filter = prompt_output_choice()
-    output_filter = prompt_output_filter()
 
     api_key = args.api_key or os.getenv("ALPHAGENOME_API_KEY")
     if not api_key:
